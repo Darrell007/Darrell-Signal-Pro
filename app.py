@@ -14,7 +14,7 @@ def webhook():
         chat_id = data['message']['chat']['id']
         text = data['message'].get('text', '')
 
-        if text == '/start':
+        if text.strip() == '/start':
             send_message(chat_id, "👋 Welcome! You’ll receive BTC signals here.")
 
     return '', 200
@@ -29,8 +29,7 @@ def index():
     return 'Bot is running.'
 
 if __name__ == '__main__':
-   import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 
-port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port)
  
