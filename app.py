@@ -43,6 +43,26 @@ def send_message(chat_id, text):
 
 if __name__ == '__main__':
     app.run(debug=True)
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    update = request.get_json()
+
+    if "message" in update:
+        chat_id = update["message"]["chat"]["id"]
+        text = update["message"].get("text", "")
+
+        # Manual trigger for signal
+        if text.startswith("/signal"):
+            parts = text.split()
+            if len(parts) == 3:
+                asset, action = parts[1], parts[2]
+                message = f"📡 Manual Signal\nAsset: {asset}\nAction: {action.upper()}"
+                log_signal(asset, action, source="manual")
+                send_message(chat_id, message)
+            else:
+                send_message(chat_id, "Usage: /signal BTC/USD BUY")
+    
+    return "OK"
 
 
 
