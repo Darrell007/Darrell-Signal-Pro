@@ -6,5 +6,6 @@ pandas
 ta
 apscheduler
 gunicorn
+pyTelegramBotAPI
 
 
